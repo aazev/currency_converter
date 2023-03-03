@@ -1,3 +1,5 @@
-# wp_img2webp
+# Currency Converter
 
-[![Build Status](https://github.com/aazev/grubcentral/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/aazev/grubcentral/actions/workflows/build.yml)
+## Desafio #boracodar RocketSeat
+
+[![Build Status](https://github.com/aazev/currency_converter/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/aazev/currency_converter/actions/workflows/linux.yml)
