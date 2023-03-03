@@ -1,7 +1,7 @@
 use std::{env, str::FromStr};
 
 use dotenv::dotenv;
-use sqlx::{database, mysql::MySqlPoolOptions, MySqlPool};
+use sqlx::{database, mysql::MySqlPoolOptions, postgres::PgPoolOptions, MySqlPool, PgPool};
 
 #[derive(Debug)]
 pub enum DatabaseType {
@@ -31,7 +31,6 @@ struct DatabaseConfig {
     database_name: String,
 }
 
-#[allow(dead_code)]
 impl DatabaseConfig {
     pub fn to_connect_string(&self) -> String {
         // postgresql://ev_owner:ev@127.0.0.1:5400/metrics
@@ -64,7 +63,12 @@ impl DatabaseConfig {
     }
 }
 
-pub async fn connect() -> Result<MySqlPool, sqlx::Error> {
+pub enum DatabasePool {
+    MySql(MySqlPool),
+    Postgres(PgPool),
+}
+
+async fn connect_mysql() -> Result<MySqlPool, sqlx::Error> {
     dotenv().ok();
     let connection_string = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let max_connections: u32 = env::var("DATABASE_MAX_CONNECTIONS")
@@ -81,6 +85,42 @@ pub async fn connect() -> Result<MySqlPool, sqlx::Error> {
         .max_connections(max_connections)
         .connect(&connection_string)
         .await?;
-    sqlx::migrate!("../migrations").run(&pool).await.unwrap();
+    sqlx::migrate!("../migrations/mysql")
+        .run(&pool)
+        .await
+        .unwrap();
     Ok(pool)
+}
+
+async fn connect_postgres() -> Result<PgPool, sqlx::Error> {
+    dotenv().ok();
+    let connection_string = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let max_connections: u32 = env::var("DATABASE_MAX_CONNECTIONS")
+        .unwrap_or("10".to_string())
+        .parse()
+        .unwrap();
+    let min_connections: u32 = env::var("DATABASE_MIN_CONNECTIONS")
+        .unwrap_or("2".to_string())
+        .parse()
+        .unwrap();
+
+    let pool = PgPoolOptions::new()
+        .min_connections(min_connections)
+        .max_connections(max_connections)
+        .connect(&connection_string)
+        .await?;
+    sqlx::migrate!("../migrations/postgresql")
+        .run(&pool)
+        .await
+        .unwrap();
+    Ok(pool)
+}
+
+pub async fn connect() -> DatabasePool {
+    let connection_string = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let config = DatabaseConfig::from_connection_string(&connection_string);
+    match config._type {
+        DatabaseType::MySql => DatabasePool::MySql(connect_mysql().await.unwrap()),
+        DatabaseType::Postgres => DatabasePool::Postgres(connect_postgres().await.unwrap()),
+    }
 }

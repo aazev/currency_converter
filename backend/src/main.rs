@@ -4,6 +4,7 @@ mod types;
 
 use axum::{http::StatusCode, response::IntoResponse, routing::get, Json, Router, Server};
 use clap::Parser;
+use database::pool::connect;
 use hyperlocal::UnixServerExt;
 use rand::prelude::*;
 use rand::rngs::StdRng;
@@ -44,7 +45,10 @@ async fn socket_serve() {
         false => println!("No existing socket file found."),
     }
 
-    let app = Router::new().route("/", get(home)).fallback(deal_with_it);
+    let app = Router::new()
+        .route("/", get(home))
+        .fallback(deal_with_it)
+        .with_state(connect);
 
     println!("Starting server on socket: {}", socket_addr);
 
@@ -61,7 +65,10 @@ async fn address_serve() {
         .parse::<SocketAddr>()
         .expect("Failed to parse server address.");
 
-    let app = Router::new().route("/", get(home)).fallback(deal_with_it);
+    let app = Router::new()
+        .route("/", get(home))
+        .fallback(deal_with_it)
+        .with_state(connect);
 
     println!("Starting server on address: {}", &address);
 
@@ -74,6 +81,7 @@ async fn address_serve() {
 #[tokio::main]
 async fn main() {
     dotenv::dotenv().ok();
+
     // let opts: Opts = Opts::parse();
 
     // match opts.mode {
