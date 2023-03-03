@@ -1,0 +1,124 @@
+version: "3.8"
+
+services:
+  curr-conv-db:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: fh0xm1
+      POSTGRES_USER: cc_owner
+      POSTGRES_DB: currency_converter
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - curr-conv-devenv-network
+    command: >
+      -c max_connections=250
+      -c superuser_reserved_connections=3
+      -c shared_buffers='80 MB'
+      -c work_mem='128 MB'
+      -c maintenance_work_mem='420 MB'
+      -c huge_pages=off
+      -c effective_cache_size='11 GB'
+      -c effective_io_concurrency=100   
+      -c random_page_cost=1.25 
+      -c track_io_timing=on        
+      -c track_functions=pl        
+      -c wal_level=replica     
+      -c max_wal_senders=0
+      -c synchronous_commit=off
+      -c checkpoint_timeout='15 min'
+      -c checkpoint_completion_target=0.9
+      -c max_wal_size='10240 MB'
+      -c min_wal_size='5120 MB'
+      -c wal_compression=on
+      -c wal_buffers=-1    
+      -c bgwriter_delay=200ms
+      -c bgwriter_lru_maxpages=100
+      -c bgwriter_lru_multiplier=2.0
+      -c bgwriter_flush_after=0
+      -c max_worker_processes=8
+      -c max_parallel_workers_per_gather=4
+      -c max_parallel_maintenance_workers=4
+      -c max_parallel_workers=8
+      -c parallel_leader_participation=on
+      -c enable_partitionwise_join=on
+      -c enable_partitionwise_aggregate=on
+      -c jit=on
+
+  curr-conv-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/mnesia
+      - rabbitmq-log:/var/log/rabbitmq
+    networks:
+      - curr-conv-devenv-network
+
+  curr-conv-glmongo:
+    image: mongo:3
+    restart: unless-stopped
+    networks:
+      - curr-conv-devenv-network
+
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
+  curr-conv-glelasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.10
+    restart: unless-stopped
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    networks:
+      - curr-conv-devenv-network
+
+  # Graylog: https://hub.docker.com/r/graylog/graylog/
+  curr-conv-graylog:
+    image: graylog/graylog:3.3
+    restart: unless-stopped
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      # Password: admin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      - GRAYLOG_MONGODB_URI=mongodb://evglmongo/graylog
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://evglelasticsearch:9200
+    networks:
+      - curr-conv-devenv-network
+    depends_on:
+      - curr-conv-glmongo
+      - curr-conv-glelasticsearch
+    ports:
+      # Graylog web interface and REST API
+      - 9000:9000
+      # Syslog TCP
+      - 1514:1514
+      # Syslog UDP
+      - 1514:1514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
+
+volumes:
+  postgres-data:
+  rabbitmq-data:
+  rabbitmq-log:
+
+networks:
+  curr-conv-devenv-network:
+    driver: bridge

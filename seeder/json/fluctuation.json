@@ -1,0 +1,1029 @@
+{
+    "success": true,
+    "fluctuation": true,
+    "start_date": "2023-02-27",
+    "end_date": "2023-03-01",
+    "base": "EUR",
+    "rates": {
+        "AED": {
+            "start_rate": 3.896978,
+            "end_rate": 3.919435,
+            "change": 0.0225,
+            "change_pct": 0.5763
+        },
+        "AFN": {
+            "start_rate": 92.829937,
+            "end_rate": 94.969044,
+            "change": 2.1391,
+            "change_pct": 2.3043
+        },
+        "ALL": {
+            "start_rate": 115.060315,
+            "end_rate": 115.083132,
+            "change": 0.0228,
+            "change_pct": 0.0198
+        },
+        "AMD": {
+            "start_rate": 412.77335,
+            "end_rate": 415.098868,
+            "change": 2.3255,
+            "change_pct": 0.5634
+        },
+        "ANG": {
+            "start_rate": 1.912145,
+            "end_rate": 1.923009,
+            "change": 0.0109,
+            "change_pct": 0.5682
+        },
+        "AOA": {
+            "start_rate": 538.433175,
+            "end_rate": 540.48749,
+            "change": 2.0543,
+            "change_pct": 0.3815
+        },
+        "ARS": {
+            "start_rate": 208.789399,
+            "end_rate": 210.799567,
+            "change": 2.0102,
+            "change_pct": 0.9628
+        },
+        "AUD": {
+            "start_rate": 1.573878,
+            "end_rate": 1.578685,
+            "change": 0.0048,
+            "change_pct": 0.3054
+        },
+        "AWG": {
+            "start_rate": 1.912365,
+            "end_rate": 1.923385,
+            "change": 0.011,
+            "change_pct": 0.5762
+        },
+        "AZN": {
+            "start_rate": 1.803139,
+            "end_rate": 1.811123,
+            "change": 0.008,
+            "change_pct": 0.4428
+        },
+        "BAM": {
+            "start_rate": 1.964591,
+            "end_rate": 1.955885,
+            "change": -0.0087,
+            "change_pct": -0.4431
+        },
+        "BBD": {
+            "start_rate": 2.142173,
+            "end_rate": 2.154129,
+            "change": 0.012,
+            "change_pct": 0.5581
+        },
+        "BDT": {
+            "start_rate": 113.147758,
+            "end_rate": 111.467934,
+            "change": -1.6798,
+            "change_pct": -1.4846
+        },
+        "BGN": {
+            "start_rate": 1.954743,
+            "end_rate": 1.958074,
+            "change": 0.0033,
+            "change_pct": 0.1704
+        },
+        "BHD": {
+            "start_rate": 0.400034,
+            "end_rate": 0.402353,
+            "change": 0.0023,
+            "change_pct": 0.5797
+        },
+        "BIF": {
+            "start_rate": 2185.559863,
+            "end_rate": 2198.154129,
+            "change": 12.5943,
+            "change_pct": 0.5762
+        },
+        "BMD": {
+            "start_rate": 1.060951,
+            "end_rate": 1.067065,
+            "change": 0.0061,
+            "change_pct": 0.5763
+        },
+        "BND": {
+            "start_rate": 1.431296,
+            "end_rate": 1.429607,
+            "change": -0.0017,
+            "change_pct": -0.118
+        },
+        "BOB": {
+            "start_rate": 7.331163,
+            "end_rate": 7.372214,
+            "change": 0.0411,
+            "change_pct": 0.56
+        },
+        "BRL": {
+            "start_rate": 5.518221,
+            "end_rate": 5.526966,
+            "change": 0.0087,
+            "change_pct": 0.1585
+        },
+        "BSD": {
+            "start_rate": 1.060941,
+            "end_rate": 1.066915,
+            "change": 0.006,
+            "change_pct": 0.5631
+        },
+        "BTC": {
+            "start_rate": 4.5153857e-05,
+            "end_rate": 4.537839e-05,
+            "change": 0,
+            "change_pct": 0.4973
+        },
+        "BTN": {
+            "start_rate": 87.901848,
+            "end_rate": 88.030622,
+            "change": 0.1288,
+            "change_pct": 0.1465
+        },
+        "BWP": {
+            "start_rate": 14.126833,
+            "end_rate": 14.094968,
+            "change": -0.0319,
+            "change_pct": -0.2256
+        },
+        "BYN": {
+            "start_rate": 2.677968,
+            "end_rate": 2.693276,
+            "change": 0.0153,
+            "change_pct": 0.5716
+        },
+        "BYR": {
+            "start_rate": 20794.647238,
+            "end_rate": 20914.476176,
+            "change": 119.8289,
+            "change_pct": 0.5762
+        },
+        "BZD": {
+            "start_rate": 2.138537,
+            "end_rate": 2.150781,
+            "change": 0.0122,
+            "change_pct": 0.5725
+        },
+        "CAD": {
+            "start_rate": 1.4404,
+            "end_rate": 1.450622,
+            "change": 0.0102,
+            "change_pct": 0.7097
+        },
+        "CDF": {
+            "start_rate": 2169.645279,
+            "end_rate": 2182.14782,
+            "change": 12.5025,
+            "change_pct": 0.5762
+        },
+        "CHF": {
+            "start_rate": 0.992841,
+            "end_rate": 1.002497,
+            "change": 0.0097,
+            "change_pct": 0.9726
+        },
+        "CLF": {
+            "start_rate": 0.032053,
+            "end_rate": 0.031365,
+            "change": -0.0007,
+            "change_pct": -2.1464
+        },
+        "CLP": {
+            "start_rate": 884.451034,
+            "end_rate": 865.464609,
+            "change": -18.9864,
+            "change_pct": -2.1467
+        },
+        "CNY": {
+            "start_rate": 7.36833,
+            "end_rate": 7.329778,
+            "change": -0.0386,
+            "change_pct": -0.5232
+        },
+        "COP": {
+            "start_rate": 5070.297301,
+            "end_rate": 5173.430436,
+            "change": 103.1331,
+            "change_pct": 2.0341
+        },
+        "CRC": {
+            "start_rate": 594.557074,
+            "end_rate": 595.772395,
+            "change": 1.2153,
+            "change_pct": 0.2044
+        },
+        "CUC": {
+            "start_rate": 1.060951,
+            "end_rate": 1.067065,
+            "change": 0.0061,
+            "change_pct": 0.5763
+        },
+        "CUP": {
+            "start_rate": 28.115212,
+            "end_rate": 28.277225,
+            "change": 0.162,
+            "change_pct": 0.5762
+        },
+        "CVE": {
+            "start_rate": 110.816771,
+            "end_rate": 110.600897,
+            "change": -0.2159,
+            "change_pct": -0.1948
+        },
+        "CZK": {
+            "start_rate": 23.645845,
+            "end_rate": 23.355548,
+            "change": -0.2903,
+            "change_pct": -1.2277
+        },
+        "DJF": {
+            "start_rate": 188.90223,
+            "end_rate": 189.638882,
+            "change": 0.7367,
+            "change_pct": 0.39
+        },
+        "DKK": {
+            "start_rate": 7.443868,
+            "end_rate": 7.442208,
+            "change": -0.0017,
+            "change_pct": -0.0223
+        },
+        "DOP": {
+            "start_rate": 58.881366,
+            "end_rate": 59.168921,
+            "change": 0.2876,
+            "change_pct": 0.4884
+        },
+        "DZD": {
+            "start_rate": 145.054178,
+            "end_rate": 145.472865,
+            "change": 0.4187,
+            "change_pct": 0.2886
+        },
+        "EGP": {
+            "start_rate": 32.496625,
+            "end_rate": 32.68132,
+            "change": 0.1847,
+            "change_pct": 0.5684
+        },
+        "ERN": {
+            "start_rate": 15.914271,
+            "end_rate": 16.005977,
+            "change": 0.0917,
+            "change_pct": 0.5763
+        },
+        "ETB": {
+            "start_rate": 56.972334,
+            "end_rate": 57.354892,
+            "change": 0.3826,
+            "change_pct": 0.6715
+        },
+        "EUR": {
+            "start_rate": 1,
+            "end_rate": 1,
+            "change": 0,
+            "change_pct": 0
+        },
+        "FJD": {
+            "start_rate": 2.352026,
+            "end_rate": 2.355655,
+            "change": 0.0036,
+            "change_pct": 0.1543
+        },
+        "FKP": {
+            "start_rate": 0.888238,
+            "end_rate": 0.88227,
+            "change": -0.006,
+            "change_pct": -0.6719
+        },
+        "GBP": {
+            "start_rate": 0.879661,
+            "end_rate": 0.887233,
+            "change": 0.0076,
+            "change_pct": 0.8608
+        },
+        "GEL": {
+            "start_rate": 2.789903,
+            "end_rate": 2.779711,
+            "change": -0.0102,
+            "change_pct": -0.3653
+        },
+        "GGP": {
+            "start_rate": 0.888238,
+            "end_rate": 0.88227,
+            "change": -0.006,
+            "change_pct": -0.6719
+        },
+        "GHS": {
+            "start_rate": 13.689527,
+            "end_rate": 13.712148,
+            "change": 0.0226,
+            "change_pct": 0.1652
+        },
+        "GIP": {
+            "start_rate": 0.888238,
+            "end_rate": 0.88227,
+            "change": -0.006,
+            "change_pct": -0.6719
+        },
+        "GMD": {
+            "start_rate": 64.717854,
+            "end_rate": 65.144247,
+            "change": 0.4264,
+            "change_pct": 0.6588
+        },
+        "GNF": {
+            "start_rate": 9336.37222,
+            "end_rate": 9390.173156,
+            "change": 53.8009,
+            "change_pct": 0.5763
+        },
+        "GTQ": {
+            "start_rate": 8.291354,
+            "end_rate": 8.333257,
+            "change": 0.0419,
+            "change_pct": 0.5054
+        },
+        "GYD": {
+            "start_rate": 223.860432,
+            "end_rate": 225.131078,
+            "change": 1.2706,
+            "change_pct": 0.5676
+        },
+        "HKD": {
+            "start_rate": 8.32311,
+            "end_rate": 8.375448,
+            "change": 0.0523,
+            "change_pct": 0.6288
+        },
+        "HNL": {
+            "start_rate": 26.152507,
+            "end_rate": 26.313938,
+            "change": 0.1614,
+            "change_pct": 0.6173
+        },
+        "HRK": {
+            "start_rate": 7.484793,
+            "end_rate": 7.527925,
+            "change": 0.0431,
+            "change_pct": 0.5763
+        },
+        "HTG": {
+            "start_rate": 159.447571,
+            "end_rate": 160.887201,
+            "change": 1.4396,
+            "change_pct": 0.9029
+        },
+        "HUF": {
+            "start_rate": 377.952793,
+            "end_rate": 373.28097,
+            "change": -4.6718,
+            "change_pct": -1.2361
+        },
+        "IDR": {
+            "start_rate": 16143.436345,
+            "end_rate": 16271.729231,
+            "change": 128.2929,
+            "change_pct": 0.7947
+        },
+        "ILS": {
+            "start_rate": 3.889819,
+            "end_rate": 3.859356,
+            "change": -0.0305,
+            "change_pct": -0.7831
+        },
+        "IMP": {
+            "start_rate": 0.888238,
+            "end_rate": 0.88227,
+            "change": -0.006,
+            "change_pct": -0.6719
+        },
+        "INR": {
+            "start_rate": 87.69002,
+            "end_rate": 87.947667,
+            "change": 0.2576,
+            "change_pct": 0.2938
+        },
+        "IQD": {
+            "start_rate": 1548.989029,
+            "end_rate": 1558.448595,
+            "change": 9.4596,
+            "change_pct": 0.6107
+        },
+        "IRR": {
+            "start_rate": 44878.243914,
+            "end_rate": 45083.501087,
+            "change": 205.2572,
+            "change_pct": 0.4574
+        },
+        "ISK": {
+            "start_rate": 152.310159,
+            "end_rate": 151.54451,
+            "change": -0.7656,
+            "change_pct": -0.5027
+        },
+        "JEP": {
+            "start_rate": 0.888238,
+            "end_rate": 0.88227,
+            "change": -0.006,
+            "change_pct": -0.6719
+        },
+        "JMD": {
+            "start_rate": 163.258061,
+            "end_rate": 163.384002,
+            "change": 0.1259,
+            "change_pct": 0.0771
+        },
+        "JOD": {
+            "start_rate": 0.752854,
+            "end_rate": 0.756974,
+            "change": 0.0041,
+            "change_pct": 0.5473
+        },
+        "JPY": {
+            "start_rate": 144.628831,
+            "end_rate": 145.209426,
+            "change": 0.5806,
+            "change_pct": 0.4014
+        },
+        "KES": {
+            "start_rate": 134.848501,
+            "end_rate": 136.166292,
+            "change": 1.3178,
+            "change_pct": 0.9772
+        },
+        "KGS": {
+            "start_rate": 92.745196,
+            "end_rate": 93.278576,
+            "change": 0.5334,
+            "change_pct": 0.5751
+        },
+        "KHR": {
+            "start_rate": 4289.426463,
+            "end_rate": 4337.619811,
+            "change": 48.1933,
+            "change_pct": 1.1235
+        },
+        "KMF": {
+            "start_rate": 493.076946,
+            "end_rate": 492.583986,
+            "change": -0.493,
+            "change_pct": -0.1
+        },
+        "KPW": {
+            "start_rate": 954.856251,
+            "end_rate": 960.365204,
+            "change": 5.509,
+            "change_pct": 0.5769
+        },
+        "KRW": {
+            "start_rate": 1399.074045,
+            "end_rate": 1393.47856,
+            "change": -5.5955,
+            "change_pct": -0.3999
+        },
+        "KWD": {
+            "start_rate": 0.325818,
+            "end_rate": 0.327504,
+            "change": 0.0017,
+            "change_pct": 0.5175
+        },
+        "KYD": {
+            "start_rate": 0.884126,
+            "end_rate": 0.889204,
+            "change": 0.0051,
+            "change_pct": 0.5744
+        },
+        "KZT": {
+            "start_rate": 474.616587,
+            "end_rate": 470.542254,
+            "change": -4.0743,
+            "change_pct": -0.8584
+        },
+        "LAK": {
+            "start_rate": 17967.211453,
+            "end_rate": 18097.424112,
+            "change": 130.2127,
+            "change_pct": 0.7247
+        },
+        "LBP": {
+            "start_rate": 15865.693721,
+            "end_rate": 16299.419198,
+            "change": 433.7255,
+            "change_pct": 2.7337
+        },
+        "LKR": {
+            "start_rate": 385.116395,
+            "end_rate": 381.98083,
+            "change": -3.1356,
+            "change_pct": -0.8142
+        },
+        "LRD": {
+            "start_rate": 167.352807,
+            "end_rate": 169.60974,
+            "change": 2.2569,
+            "change_pct": 1.3486
+        },
+        "LSL": {
+            "start_rate": 19.532038,
+            "end_rate": 19.489902,
+            "change": -0.0421,
+            "change_pct": -0.2157
+        },
+        "LTL": {
+            "start_rate": 3.132714,
+            "end_rate": 3.150766,
+            "change": 0.0181,
+            "change_pct": 0.5762
+        },
+        "LVL": {
+            "start_rate": 0.641759,
+            "end_rate": 0.645457,
+            "change": 0.0037,
+            "change_pct": 0.5762
+        },
+        "LYD": {
+            "start_rate": 5.145349,
+            "end_rate": 5.159253,
+            "change": 0.0139,
+            "change_pct": 0.2702
+        },
+        "MAD": {
+            "start_rate": 11.024879,
+            "end_rate": 11.061207,
+            "change": 0.0363,
+            "change_pct": 0.3295
+        },
+        "MDL": {
+            "start_rate": 20.073308,
+            "end_rate": 20.155397,
+            "change": 0.0821,
+            "change_pct": 0.4089
+        },
+        "MGA": {
+            "start_rate": 4563.152213,
+            "end_rate": 4592.648001,
+            "change": 29.4958,
+            "change_pct": 0.6464
+        },
+        "MKD": {
+            "start_rate": 61.641226,
+            "end_rate": 61.628092,
+            "change": -0.0131,
+            "change_pct": -0.0213
+        },
+        "MMK": {
+            "start_rate": 2227.945385,
+            "end_rate": 2240.668932,
+            "change": 12.7235,
+            "change_pct": 0.5711
+        },
+        "MNT": {
+            "start_rate": 3735.802515,
+            "end_rate": 3764.274446,
+            "change": 28.4719,
+            "change_pct": 0.7621
+        },
+        "MOP": {
+            "start_rate": 8.575582,
+            "end_rate": 8.626943,
+            "change": 0.0514,
+            "change_pct": 0.5989
+        },
+        "MRO": {
+            "start_rate": 378.759464,
+            "end_rate": 380.942061,
+            "change": 2.1826,
+            "change_pct": 0.5762
+        },
+        "MUR": {
+            "start_rate": 49.073302,
+            "end_rate": 49.458564,
+            "change": 0.3853,
+            "change_pct": 0.7851
+        },
+        "MVR": {
+            "start_rate": 16.295764,
+            "end_rate": 16.379357,
+            "change": 0.0836,
+            "change_pct": 0.513
+        },
+        "MWK": {
+            "start_rate": 1082.708071,
+            "end_rate": 1092.14067,
+            "change": 9.4326,
+            "change_pct": 0.8712
+        },
+        "MXN": {
+            "start_rate": 19.502301,
+            "end_rate": 19.333088,
+            "change": -0.1692,
+            "change_pct": -0.8677
+        },
+        "MYR": {
+            "start_rate": 4.753594,
+            "end_rate": 4.882883,
+            "change": 0.1293,
+            "change_pct": 2.7198
+        },
+        "MZN": {
+            "start_rate": 66.946971,
+            "end_rate": 67.329774,
+            "change": 0.3828,
+            "change_pct": 0.5718
+        },
+        "NAD": {
+            "start_rate": 19.542568,
+            "end_rate": 19.495053,
+            "change": -0.0475,
+            "change_pct": -0.2431
+        },
+        "NGN": {
+            "start_rate": 488.566895,
+            "end_rate": 491.380566,
+            "change": 2.8137,
+            "change_pct": 0.5759
+        },
+        "NIO": {
+            "start_rate": 38.619041,
+            "end_rate": 38.873164,
+            "change": 0.2541,
+            "change_pct": 0.658
+        },
+        "NOK": {
+            "start_rate": 10.968856,
+            "end_rate": 11.083397,
+            "change": 0.1145,
+            "change_pct": 1.0442
+        },
+        "NPR": {
+            "start_rate": 140.642554,
+            "end_rate": 140.848675,
+            "change": 0.2061,
+            "change_pct": 0.1466
+        },
+        "NZD": {
+            "start_rate": 1.721356,
+            "end_rate": 1.705812,
+            "change": -0.0155,
+            "change_pct": -0.903
+        },
+        "OMR": {
+            "start_rate": 0.408507,
+            "end_rate": 0.410755,
+            "change": 0.0022,
+            "change_pct": 0.5503
+        },
+        "PAB": {
+            "start_rate": 1.060941,
+            "end_rate": 1.06704,
+            "change": 0.0061,
+            "change_pct": 0.5749
+        },
+        "PEN": {
+            "start_rate": 4.034266,
+            "end_rate": 4.049019,
+            "change": 0.0148,
+            "change_pct": 0.3657
+        },
+        "PGK": {
+            "start_rate": 3.739827,
+            "end_rate": 3.756094,
+            "change": 0.0163,
+            "change_pct": 0.435
+        },
+        "PHP": {
+            "start_rate": 58.718348,
+            "end_rate": 58.678531,
+            "change": -0.0398,
+            "change_pct": -0.0678
+        },
+        "PKR": {
+            "start_rate": 275.847533,
+            "end_rate": 284.084861,
+            "change": 8.2373,
+            "change_pct": 2.9862
+        },
+        "PLN": {
+            "start_rate": 4.715239,
+            "end_rate": 4.672411,
+            "change": -0.0428,
+            "change_pct": -0.9083
+        },
+        "PYG": {
+            "start_rate": 7731.75319,
+            "end_rate": 7770.481829,
+            "change": 38.7286,
+            "change_pct": 0.5009
+        },
+        "QAR": {
+            "start_rate": 3.86295,
+            "end_rate": 3.885177,
+            "change": 0.0222,
+            "change_pct": 0.5754
+        },
+        "RON": {
+            "start_rate": 4.924831,
+            "end_rate": 4.921491,
+            "change": -0.0033,
+            "change_pct": -0.0678
+        },
+        "RSD": {
+            "start_rate": 117.267161,
+            "end_rate": 117.29714,
+            "change": 0.03,
+            "change_pct": 0.0256
+        },
+        "RUB": {
+            "start_rate": 79.19982,
+            "end_rate": 80.312708,
+            "change": 1.1129,
+            "change_pct": 1.4052
+        },
+        "RWF": {
+            "start_rate": 1158.558918,
+            "end_rate": 1165.768634,
+            "change": 7.2097,
+            "change_pct": 0.6223
+        },
+        "SAR": {
+            "start_rate": 3.98141,
+            "end_rate": 4.004007,
+            "change": 0.0226,
+            "change_pct": 0.5676
+        },
+        "SBD": {
+            "start_rate": 8.734477,
+            "end_rate": 8.786149,
+            "change": 0.0517,
+            "change_pct": 0.5916
+        },
+        "SCR": {
+            "start_rate": 13.816414,
+            "end_rate": 14.53293,
+            "change": 0.7165,
+            "change_pct": 5.186
+        },
+        "SDG": {
+            "start_rate": 625.444483,
+            "end_rate": 629.032156,
+            "change": 3.5877,
+            "change_pct": 0.5736
+        },
+        "SEK": {
+            "start_rate": 11.022965,
+            "end_rate": 11.134953,
+            "change": 0.112,
+            "change_pct": 1.016
+        },
+        "SGD": {
+            "start_rate": 1.429074,
+            "end_rate": 1.432215,
+            "change": 0.0031,
+            "change_pct": 0.2198
+        },
+        "SHP": {
+            "start_rate": 1.290913,
+            "end_rate": 1.298351,
+            "change": 0.0074,
+            "change_pct": 0.5762
+        },
+        "SLE": {
+            "start_rate": 21.287996,
+            "end_rate": 21.99194,
+            "change": 0.7039,
+            "change_pct": 3.3068
+        },
+        "SLL": {
+            "start_rate": 20953.790014,
+            "end_rate": 21074.535891,
+            "change": 120.7459,
+            "change_pct": 0.5762
+        },
+        "SOS": {
+            "start_rate": 603.148096,
+            "end_rate": 607.688928,
+            "change": 4.5408,
+            "change_pct": 0.7529
+        },
+        "SRD": {
+            "start_rate": 35.960414,
+            "end_rate": 36.400261,
+            "change": 0.4398,
+            "change_pct": 1.2231
+        },
+        "STD": {
+            "start_rate": 21959.551714,
+            "end_rate": 22086.093402,
+            "change": 126.5417,
+            "change_pct": 0.5762
+        },
+        "SVC": {
+            "start_rate": 9.283488,
+            "end_rate": 9.336045,
+            "change": 0.0526,
+            "change_pct": 0.5661
+        },
+        "SYP": {
+            "start_rate": 2665.220362,
+            "end_rate": 2681.003777,
+            "change": 15.7834,
+            "change_pct": 0.5922
+        },
+        "SZL": {
+            "start_rate": 19.53165,
+            "end_rate": 19.48996,
+            "change": -0.0417,
+            "change_pct": -0.2134
+        },
+        "THB": {
+            "start_rate": 37.133596,
+            "end_rate": 37.033296,
+            "change": -0.1003,
+            "change_pct": -0.2701
+        },
+        "TJS": {
+            "start_rate": 11.580353,
+            "end_rate": 11.635456,
+            "change": 0.0551,
+            "change_pct": 0.4758
+        },
+        "TMT": {
+            "start_rate": 3.723939,
+            "end_rate": 3.734728,
+            "change": 0.0108,
+            "change_pct": 0.2897
+        },
+        "TND": {
+            "start_rate": 3.357851,
+            "end_rate": 3.348428,
+            "change": -0.0094,
+            "change_pct": -0.2806
+        },
+        "TOP": {
+            "start_rate": 2.505648,
+            "end_rate": 2.516513,
+            "change": 0.0109,
+            "change_pct": 0.4336
+        },
+        "TRY": {
+            "start_rate": 20.042024,
+            "end_rate": 20.161619,
+            "change": 0.1196,
+            "change_pct": 0.5967
+        },
+        "TTD": {
+            "start_rate": 7.201383,
+            "end_rate": 7.238424,
+            "change": 0.037,
+            "change_pct": 0.5144
+        },
+        "TWD": {
+            "start_rate": 32.478698,
+            "end_rate": 32.626047,
+            "change": 0.1473,
+            "change_pct": 0.4537
+        },
+        "TZS": {
+            "start_rate": 2474.138331,
+            "end_rate": 2488.395767,
+            "change": 14.2574,
+            "change_pct": 0.5763
+        },
+        "UAH": {
+            "start_rate": 38.991654,
+            "end_rate": 39.408543,
+            "change": 0.4169,
+            "change_pct": 1.0692
+        },
+        "UGX": {
+            "start_rate": 3949.952329,
+            "end_rate": 3969.219012,
+            "change": 19.2667,
+            "change_pct": 0.4878
+        },
+        "USD": {
+            "start_rate": 1.060951,
+            "end_rate": 1.067065,
+            "change": 0.0061,
+            "change_pct": 0.5763
+        },
+        "UYU": {
+            "start_rate": 41.25537,
+            "end_rate": 41.6712,
+            "change": 0.4158,
+            "change_pct": 1.0079
+        },
+        "UZS": {
+            "start_rate": 12015.274528,
+            "end_rate": 12121.859706,
+            "change": 106.5852,
+            "change_pct": 0.8871
+        },
+        "VEF": {
+            "start_rate": 2579719.979423,
+            "end_rate": 2609859.022618,
+            "change": 30,
+            "change_pct": 1.1683
+        },
+        "VES": {
+            "start_rate": 25.872153,
+            "end_rate": 25.958123,
+            "change": 0.086,
+            "change_pct": 0.3323
+        },
+        "VND": {
+            "start_rate": 25271.862102,
+            "end_rate": 25316.119759,
+            "change": 44.2577,
+            "change_pct": 0.1751
+        },
+        "VUV": {
+            "start_rate": 124.537302,
+            "end_rate": 127.240637,
+            "change": 2.7033,
+            "change_pct": 2.1707
+        },
+        "WST": {
+            "start_rate": 2.841331,
+            "end_rate": 2.921643,
+            "change": 0.0803,
+            "change_pct": 2.8266
+        },
+        "XAF": {
+            "start_rate": 658.882916,
+            "end_rate": 655.960142,
+            "change": -2.9228,
+            "change_pct": -0.4436
+        },
+        "XAG": {
+            "start_rate": 0.051429,
+            "end_rate": 0.050821,
+            "change": -0.0006,
+            "change_pct": -1.1822
+        },
+        "XAU": {
+            "start_rate": 0.000584,
+            "end_rate": 0.00058,
+            "change": 0,
+            "change_pct": -0.6849
+        },
+        "XCD": {
+            "start_rate": 2.867274,
+            "end_rate": 2.883797,
+            "change": 0.0165,
+            "change_pct": 0.5763
+        },
+        "XDR": {
+            "start_rate": 0.799048,
+            "end_rate": 0.803004,
+            "change": 0.004,
+            "change_pct": 0.4951
+        },
+        "XOF": {
+            "start_rate": 659.364779,
+            "end_rate": 658.907572,
+            "change": -0.4572,
+            "change_pct": -0.0693
+        },
+        "XPF": {
+            "start_rate": 119.523998,
+            "end_rate": 119.616489,
+            "change": 0.0925,
+            "change_pct": 0.0774
+        },
+        "YER": {
+            "start_rate": 265.609104,
+            "end_rate": 267.093707,
+            "change": 1.4846,
+            "change_pct": 0.5589
+        },
+        "ZAR": {
+            "start_rate": 19.537664,
+            "end_rate": 19.335855,
+            "change": -0.2018,
+            "change_pct": -1.0329
+        },
+        "ZMK": {
+            "start_rate": 9549.824451,
+            "end_rate": 9604.871031,
+            "change": 55.0466,
+            "change_pct": 0.5764
+        },
+        "ZMW": {
+            "start_rate": 20.980263,
+            "end_rate": 21.259702,
+            "change": 0.2794,
+            "change_pct": 1.3319
+        },
+        "ZWL": {
+            "start_rate": 341.625915,
+            "end_rate": 343.59453,
+            "change": 1.9686,
+            "change_pct": 0.5762
+        }
+    }
+}
