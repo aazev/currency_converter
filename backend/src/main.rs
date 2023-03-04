@@ -3,9 +3,7 @@ mod responses;
 mod types;
 
 use axum::{
-    body::Body,
     http::StatusCode,
-    response::IntoResponse,
     routing::{get, IntoMakeService},
     Json, Router, Server,
 };
@@ -13,33 +11,15 @@ use clap::Parser;
 use database::pool::connect;
 use hyper::server::conn::AddrIncoming;
 use hyperlocal::{SocketIncoming, UnixServerExt};
-use rand::prelude::*;
-use rand::rngs::StdRng;
 use serde_json::Value;
 use std::{env, net::SocketAddr, path};
-use tokio::{runtime::Runtime, signal::ctrl_c};
+use tokio::signal::ctrl_c;
 use types::ServiceMode;
 
 #[derive(Parser)]
 struct Opts {
     #[arg(short = 'm', long = "mode", value_enum, default_value = "address")]
     mode: ServiceMode,
-}
-
-fn min_moves_to_sort_array(arr: &mut [i32]) -> i32 {
-    let mut target: Vec<i32> = arr.iter().cloned().collect();
-    target.sort();
-    let mut count = 0;
-
-    for i in 0..arr.len() {
-        if arr[i] != target[i] {
-            let j = arr.iter().position(|x| *x == target[i]).unwrap();
-            arr.swap(i, j);
-            count += 1;
-        }
-    }
-
-    count
 }
 
 fn socket_serve(rt: Router) -> Server<SocketIncoming, IntoMakeService<Router>> {
