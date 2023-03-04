@@ -1,0 +1,9 @@
+concurrency: 50
+base: "http://localhost:8000"
+iterations: 500000
+rampup: 2
+
+plan:
+  - name: Fetch home
+    request:
+      url: /api/v1/

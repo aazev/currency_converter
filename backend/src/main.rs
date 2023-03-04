@@ -2,14 +2,22 @@ mod requests;
 mod responses;
 mod types;
 
-use axum::{http::StatusCode, response::IntoResponse, routing::get, Json, Router, Server};
+use axum::{
+    body::Body,
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{get, IntoMakeService},
+    Json, Router, Server,
+};
 use clap::Parser;
 use database::pool::connect;
-use hyperlocal::UnixServerExt;
+use hyper::server::conn::AddrIncoming;
+use hyperlocal::{SocketIncoming, UnixServerExt};
 use rand::prelude::*;
 use rand::rngs::StdRng;
 use serde_json::Value;
 use std::{env, net::SocketAddr, path};
+use tokio::{runtime::Runtime, signal::ctrl_c};
 use types::ServiceMode;
 
 #[derive(Parser)]
@@ -34,7 +42,7 @@ fn min_moves_to_sort_array(arr: &mut [i32]) -> i32 {
     count
 }
 
-async fn socket_serve() {
+fn socket_serve(rt: Router) -> Server<SocketIncoming, IntoMakeService<Router>> {
     let socket_addr = env::var("SOCKET_ADDR").expect("SOCKET_ADDR must be set.");
     let socket_path = path::Path::new(&socket_addr);
     match socket_path.exists() {
@@ -45,64 +53,67 @@ async fn socket_serve() {
         false => println!("No existing socket file found."),
     }
 
-    let app = Router::new()
-        .route("/", get(home))
-        .fallback(deal_with_it)
-        .with_state(connect);
-
     println!("Starting server on socket: {}", socket_addr);
 
     Server::bind_unix(socket_path)
         .expect("Failed to bind to socket.")
-        .serve(app.into_make_service())
-        .await
-        .expect("Server error.");
+        .serve(rt.into_make_service())
 }
 
-async fn address_serve() {
+fn address_serve(rt: Router) -> Server<AddrIncoming, IntoMakeService<Router>> {
     let address = env::var("BIND_ADDRESS").expect("BIND_ADDRESS must be set.");
     let server_address: SocketAddr = address
         .parse::<SocketAddr>()
         .expect("Failed to parse server address.");
 
-    let app = Router::new()
-        .route("/", get(home))
-        .fallback(deal_with_it)
-        .with_state(connect);
-
     println!("Starting server on address: {}", &address);
 
-    Server::bind(&server_address)
-        .serve(app.into_make_service())
-        .await
-        .expect("Server error.");
+    Server::bind(&server_address).serve(rt.into_make_service())
 }
 
 #[tokio::main]
 async fn main() {
     dotenv::dotenv().ok();
+    let api = Router::new().route("/", get(home));
 
-    // let opts: Opts = Opts::parse();
+    let app = Router::new()
+        .nest("/api/v1/", api)
+        .fallback(deal_with_it)
+        .with_state(connect);
 
-    // match opts.mode {
-    //     ServiceMode::Socket => {
-    //         socket_serve().await;
-    //     }
-    //     ServiceMode::Address => {
-    //         address_serve().await;
-    //     }
-    // }
-    let file = std::fs::File::open("./json/quotations.json").unwrap();
-    let data: responses::QuotationResponse = serde_json::from_reader(file).unwrap();
+    let opts: Opts = Opts::parse();
 
-    println!("{:?}", data);
+    // let runtime = Runtime::new().unwrap();
+    let server_handle = tokio::spawn(async move {
+        match opts.mode {
+            ServiceMode::Socket => {
+                let _ = socket_serve(app).await;
+            }
+            ServiceMode::Address => {
+                let _ = address_serve(app).await;
+            }
+        };
+    });
+
+    ctrl_c().await.unwrap();
+    server_handle.abort();
+
+    // let file = std::fs::File::open("./json/quotations.json").unwrap();
+    // let data: responses::QuotationResponse = serde_json::from_reader(file).unwrap();
+
+    // println!("{:?}", data);
 }
 
 async fn home() -> Result<Json<Value>, (StatusCode, String)> {
-    Ok(Json(serde_json::json!({"message": "Hello, World!"})))
+    Ok(Json(
+        serde_json::json!({"code":200, "message": "Hello, World!"}),
+    ))
 }
 
 //returns a 404 status json
-async fn deal_with_it() -> impl IntoResponse {
-    (StatusCode::NOT_FOUND, Json("Not Found"))
+async fn deal_with_it() -> (StatusCode, Json<Value>) {
+    (
+        StatusCode::NOT_FOUND,
+        Json(serde_json::json!({"error":404,"message": "Not found"})),
+    )
 }
