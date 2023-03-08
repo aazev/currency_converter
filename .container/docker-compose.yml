@@ -49,7 +49,7 @@ services:
       -c jit=on
 
   curr-conv-rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:3.11.10-management
     restart: unless-stopped
     ports:
       - 5672:5672
@@ -61,14 +61,14 @@ services:
       - curr-conv-devenv-network
 
   curr-conv-glmongo:
-    image: mongo:3
+    image: mongo:5
     restart: unless-stopped
     networks:
       - curr-conv-devenv-network
 
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
   curr-conv-glelasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.10
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
     restart: unless-stopped
     environment:
       - http.host=0.0.0.0
@@ -85,10 +85,13 @@ services:
           memory: 1g
     networks:
       - curr-conv-devenv-network
+    ports:
+      # Graylog web interface and REST API
+      - 9200:9200
 
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   curr-conv-graylog:
-    image: graylog/graylog:3.3
+    image: graylog/graylog:5.0.5
     restart: unless-stopped
     environment:
       - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
@@ -96,9 +99,13 @@ services:
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
       - GRAYLOG_MONGODB_URI=mongodb://curr-conv-glmongo/graylog
-      - GRAYLOG_ELASTICSEARCH_HOSTS=http://evglelasticsearch:9200
+      - GRAYLOG_ELASTICSEARCH_VERSION=7
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://curr-conv-glelasticsearch:9200
     networks:
       - curr-conv-devenv-network
+    links:
+      - curr-conv-glmongo
+      - curr-conv-glelasticsearch
     depends_on:
       - curr-conv-glmongo
       - curr-conv-glelasticsearch
@@ -113,11 +120,15 @@ services:
       - 12201:12201
       # GELF UDP
       - 12201:12201/udp
-
+    volumes:
+      - "graylogjournal:/usr/share/graylog/data/journal"
+      - "graylogconfig:/usr/share/graylog/data/config" # ADDED
 volumes:
   postgres-data:
   rabbitmq-data:
   rabbitmq-log:
+  graylogjournal:
+  graylogconfig:
 
 networks:
   curr-conv-devenv-network:

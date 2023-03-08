@@ -9,12 +9,18 @@ use axum::{
 };
 use clap::Parser;
 use database::{
-    models::symbols::{retrieve_all_symbols, retrieve_symbol},
+    models::{
+        quotations::retrieve_quotations,
+        symbols::{retrieve_all_symbols, retrieve_symbol, retrieve_symbol_by_code},
+    },
     pool::connect,
 };
 use hyper::server::conn::AddrIncoming;
 use hyperlocal::{SocketIncoming, UnixServerExt};
-use responses::symbols::{SymbolResponse, SymbolsResponse};
+use responses::{
+    quotations::QuotationsResponse,
+    symbols::{SymbolResponse, SymbolsResponse},
+};
 use serde_json::Value;
 use sqlx::PgPool;
 use std::{env, net::SocketAddr, path};
@@ -63,8 +69,11 @@ async fn main() {
     let symbols = Router::new()
         .route("/", get(get_symbols))
         .route("/:id", get(get_symbol));
+    let quotations = Router::new().route("/:symbol", get(get_quotations));
 
-    let api = api.nest("/symbols", symbols);
+    let api = api
+        .nest("/symbols", symbols)
+        .nest("/quotations", quotations);
 
     let app = Router::new()
         .nest("/api/v1/", api)
@@ -120,6 +129,20 @@ async fn get_symbol(
         code: 200,
         message: None,
         symbol,
+    }))
+}
+
+async fn get_quotations(
+    Path(symbol): Path<String>,
+    State(state): State<PgPool>,
+) -> Result<Json<QuotationsResponse>, (StatusCode, String)> {
+    let symbol = retrieve_symbol_by_code(&symbol, &state).await.unwrap();
+
+    let rates = retrieve_quotations(symbol, &state).await.unwrap();
+    Ok(Json(QuotationsResponse {
+        code: 200,
+        message: None,
+        rates,
     }))
 }
 

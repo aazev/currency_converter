@@ -2,14 +2,14 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap as Map;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct SymbolsResponse {
+pub struct SymbolsApiResponse {
     pub success: bool,
     #[serde(skip_serializing_if = "Map::is_empty")]
     pub symbols: Map<String, String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct QuotationResponse {
+pub struct QuotationApiResponse {
     pub success: bool,
     pub timeseries: bool,
     pub start_date: String,
@@ -20,7 +20,7 @@ pub struct QuotationResponse {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct FluctuationResponse {
+pub struct FluctuationApiResponse {
     pub success: bool,
     pub fluctuation: bool,
     pub start_date: String,

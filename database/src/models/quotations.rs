@@ -3,6 +3,8 @@ use chrono::{NaiveDate, NaiveDateTime};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
+use super::symbols::Symbol;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Quotation {
     id: i64,
@@ -25,12 +27,17 @@ pub struct InsertableQuotation {
 }
 
 pub async fn retrieve_quotations(
+    symbol: Symbol,
     db_pool: &PgPool,
 ) -> Result<Vec<Quotation>, Box<dyn std::error::Error>> {
     let mut quotations = Vec::new();
-    let rows = sqlx::query_as!(Quotation, "SELECT * FROM quotations")
-        .fetch_all(db_pool)
-        .await?;
+    let rows = sqlx::query_as!(
+        Quotation,
+        "SELECT * FROM quotations where symbol_id = $1",
+        symbol.id
+    )
+    .fetch_all(db_pool)
+    .await?;
     for row in rows {
         quotations.push(row);
     }

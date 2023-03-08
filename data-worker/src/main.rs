@@ -2,7 +2,7 @@ mod ampq_requests;
 
 use std::env;
 
-use common::http::{requests::QuotationsRequest, responses::SymbolsResponse};
+use common::http::{requests::QuotationsRequest, responses::SymbolsApiResponse};
 use database::models::symbols::{insert_symbols, retrieve_all_symbols, InsertableSymbol};
 use deadpool::managed::Object;
 use deadpool_lapin::{Manager, Pool};
@@ -167,7 +167,7 @@ async fn handle_rabbitmq_request(
                 .header("apikey", &api_key)
                 .send()
                 .await?;
-            let response_object = response.json::<SymbolsResponse>().await?;
+            let response_object = response.json::<SymbolsApiResponse>().await?;
 
             let mut symbols = Vec::new();
             for (key, value) in response_object.symbols {

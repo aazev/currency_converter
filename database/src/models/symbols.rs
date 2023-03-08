@@ -40,6 +40,16 @@ pub async fn retrieve_symbol(
     Ok(symbol)
 }
 
+pub async fn retrieve_symbol_by_code(
+    code: &str,
+    db_pool: &PgPool,
+) -> Result<Symbol, Box<dyn std::error::Error>> {
+    let symbol = sqlx::query_as!(Symbol, "SELECT * FROM symbols WHERE code = $1", code)
+        .fetch_one(db_pool)
+        .await?;
+    Ok(symbol)
+}
+
 pub async fn insert_symbol(
     db_pool: &PgPool,
     symbol: InsertableSymbol,

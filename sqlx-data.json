@@ -1,5 +1,49 @@
 {
   "db": "PostgreSQL",
+  "286ee02a766bdb90b39fe2364999cc6eb5d62cd51c366aaaa6c042d144b49ff7": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int8"
+        },
+        {
+          "name": "code",
+          "ordinal": 1,
+          "type_info": "Bpchar"
+        },
+        {
+          "name": "name",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Bpchar"
+        ]
+      }
+    },
+    "query": "SELECT * FROM symbols WHERE code = $1"
+  },
   "43774b094431eab72cc27fa60900775620e7869f440b517f2db19a0813e9cfba": {
     "describe": {
       "columns": [
@@ -44,49 +88,7 @@
     },
     "query": "SELECT * FROM symbols WHERE id = $1"
   },
-  "515daf6daa98eb94ca123c4dad3e4f030ec8727de07807f69af73a3ceecee0e7": {
-    "describe": {
-      "columns": [
-        {
-          "name": "id",
-          "ordinal": 0,
-          "type_info": "Int8"
-        },
-        {
-          "name": "code",
-          "ordinal": 1,
-          "type_info": "Bpchar"
-        },
-        {
-          "name": "name",
-          "ordinal": 2,
-          "type_info": "Varchar"
-        },
-        {
-          "name": "created_at",
-          "ordinal": 3,
-          "type_info": "Timestamp"
-        },
-        {
-          "name": "updated_at",
-          "ordinal": 4,
-          "type_info": "Timestamp"
-        }
-      ],
-      "nullable": [
-        false,
-        false,
-        false,
-        false,
-        true
-      ],
-      "parameters": {
-        "Left": []
-      }
-    },
-    "query": "SELECT * FROM symbols"
-  },
-  "ae409476b06d4fcb0c254bfdd1720b99349f3234f29b8ed7f32f78a570071c05": {
+  "5148642a3d66571a87dc9390e1f80cb1939a287d32d1c2587574a05bec1249b9": {
     "describe": {
       "columns": [
         {
@@ -141,10 +143,54 @@
         true
       ],
       "parameters": {
+        "Left": [
+          "Int8"
+        ]
+      }
+    },
+    "query": "SELECT * FROM quotations where symbol_id = $1"
+  },
+  "515daf6daa98eb94ca123c4dad3e4f030ec8727de07807f69af73a3ceecee0e7": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int8"
+        },
+        {
+          "name": "code",
+          "ordinal": 1,
+          "type_info": "Bpchar"
+        },
+        {
+          "name": "name",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
         "Left": []
       }
     },
-    "query": "SELECT * FROM quotations"
+    "query": "SELECT * FROM symbols"
   },
   "e19f4ab90fcd23e911131b7ea5af060db2adbac6a9da1b749a3db28232a45587": {
     "describe": {
