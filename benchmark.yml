@@ -1,9 +1,19 @@
-concurrency: 50
+concurrency: 150
 base: "http://localhost:8000"
-iterations: 500000
+iterations: 50000
 rampup: 2
 
 plan:
-  - name: Fetch home
+  # - name: Fetch home
+  #   request:
+  #     url: /api/v1/
+  - name: Fetch all symbols
     request:
-      url: /api/v1/
+      url: /api/v1/symbols
+  - name: Fetch symbols by id
+    request:
+      url: /api/v1/symbols/{{ item }}
+    with_items:
+      - 20
+      - 151
+      - 47

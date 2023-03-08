@@ -18,6 +18,10 @@ tokio = { version = "1.25.0", features = ["full"] }
 clap = { version = "4.1.8", features = ["derive"] }
 rand = "0.8.5"
 hyper = "0.14.24"
+sqlx = { version = "0.6.2", features = ["postgres", "bigdecimal", "macros", "runtime-tokio-rustls", "json", "chrono", "decimal", "uuid", "migrate", "tls", "offline", "ipnetwork"] }
 
 [dependencies.database]
 path = "../database"
+
+[dependencies.common]
+path = "../common"

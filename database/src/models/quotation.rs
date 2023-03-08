@@ -1,23 +1,38 @@
-use chrono::NaiveDateTime;
+use bigdecimal::BigDecimal;
+use chrono::{NaiveDate, NaiveDateTime};
 use serde::{Deserialize, Serialize};
+use sqlx::PgPool;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct Quotation {
-    id: u64,
-    symbol_id: u64,
-    base_symbol_id: u64,
-    date: NaiveDateTime,
-    open: f64,
-    close: f64,
+pub struct Quotation {
+    id: i64,
+    symbol_id: i64,
+    base_symbol_id: i64,
+    date: NaiveDate,
+    open: BigDecimal,
+    close: BigDecimal,
     created_at: NaiveDateTime,
     updated_at: Option<NaiveDateTime>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct InsertableQuotation {
+pub struct InsertableQuotation {
     symbol_id: u64,
     base_symbol_id: u64,
     date: NaiveDateTime,
-    open: f64,
-    close: f64,
+    open: BigDecimal,
+    close: BigDecimal,
+}
+
+pub async fn retrieve_quotations(
+    db_pool: &PgPool,
+) -> Result<Vec<Quotation>, Box<dyn std::error::Error>> {
+    let mut quotations = Vec::new();
+    let rows = sqlx::query_as!(Quotation, "SELECT * FROM quotations")
+        .fetch_all(db_pool)
+        .await?;
+    for row in rows {
+        quotations.push(row);
+    }
+    Ok(quotations)
 }

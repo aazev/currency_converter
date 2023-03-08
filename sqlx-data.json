@@ -1,0 +1,58 @@
+{
+  "db": "PostgreSQL",
+  "515daf6daa98eb94ca123c4dad3e4f030ec8727de07807f69af73a3ceecee0e7": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int8"
+        },
+        {
+          "name": "code",
+          "ordinal": 1,
+          "type_info": "Bpchar"
+        },
+        {
+          "name": "name",
+          "ordinal": 2,
+          "type_info": "Varchar"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamp"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "SELECT * FROM symbols"
+  },
+  "e19f4ab90fcd23e911131b7ea5af060db2adbac6a9da1b749a3db28232a45587": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Bpchar",
+          "Varchar"
+        ]
+      }
+    },
+    "query": "INSERT INTO symbols (code, name) VALUES ($1, $2) ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name"
+  }
+}

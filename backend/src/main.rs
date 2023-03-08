@@ -1,17 +1,22 @@
-mod requests;
-mod responses;
-mod types;
+pub mod responses;
+pub mod types;
 
 use axum::{
+    extract::{Path, State},
     http::StatusCode,
     routing::{get, IntoMakeService},
     Json, Router, Server,
 };
 use clap::Parser;
-use database::pool::connect;
+use database::{
+    models::symbols::{retrieve_all_symbols, retrieve_symbol},
+    pool::connect,
+};
 use hyper::server::conn::AddrIncoming;
 use hyperlocal::{SocketIncoming, UnixServerExt};
+use responses::symbols::{SymbolResponse, SymbolsResponse};
 use serde_json::Value;
+use sqlx::PgPool;
 use std::{env, net::SocketAddr, path};
 use tokio::signal::ctrl_c;
 use types::ServiceMode;
@@ -55,11 +60,16 @@ fn address_serve(rt: Router) -> Server<AddrIncoming, IntoMakeService<Router>> {
 async fn main() {
     dotenv::dotenv().ok();
     let api = Router::new().route("/", get(home));
+    let symbols = Router::new()
+        .route("/", get(get_symbols))
+        .route("/:id", get(get_symbol));
+
+    let api = api.nest("/symbols", symbols);
 
     let app = Router::new()
         .nest("/api/v1/", api)
         .fallback(deal_with_it)
-        .with_state(connect);
+        .with_state(connect().await.unwrap());
 
     let opts: Opts = Opts::parse();
 
@@ -88,6 +98,29 @@ async fn home() -> Result<Json<Value>, (StatusCode, String)> {
     Ok(Json(
         serde_json::json!({"code":200, "message": "Hello, World!"}),
     ))
+}
+
+async fn get_symbols(
+    State(state): State<PgPool>,
+) -> Result<Json<SymbolsResponse>, (StatusCode, String)> {
+    let symbols = retrieve_all_symbols(&state).await.unwrap();
+    Ok(Json(SymbolsResponse {
+        code: 200,
+        message: None,
+        symbols,
+    }))
+}
+
+async fn get_symbol(
+    Path(id): Path<i64>,
+    State(state): State<PgPool>,
+) -> Result<Json<SymbolResponse>, (StatusCode, String)> {
+    let symbol = retrieve_symbol(id, &state).await.unwrap();
+    Ok(Json(SymbolResponse {
+        code: 200,
+        message: None,
+        symbol,
+    }))
 }
 
 //returns a 404 status json

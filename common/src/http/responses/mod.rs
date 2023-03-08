@@ -3,29 +3,29 @@ use std::collections::BTreeMap as Map;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SymbolsResponse {
-    success: bool,
+    pub success: bool,
     #[serde(skip_serializing_if = "Map::is_empty")]
-    symbols: Map<String, String>,
+    pub symbols: Map<String, String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct QuotationResponse {
-    success: bool,
-    timeseries: bool,
-    start_date: String,
-    end_date: String,
-    base: String,
+    pub success: bool,
+    pub timeseries: bool,
+    pub start_date: String,
+    pub end_date: String,
+    pub base: String,
     #[serde(skip_serializing_if = "Map::is_empty")]
-    rates: Map<String, Map<String, f64>>,
+    pub rates: Map<String, Map<String, f64>>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct FluctuationResponse {
-    success: bool,
-    fluctuation: bool,
-    start_date: String,
-    end_date: String,
-    base: String,
+    pub success: bool,
+    pub fluctuation: bool,
+    pub start_date: String,
+    pub end_date: String,
+    pub base: String,
     #[serde(skip_serializing_if = "Map::is_empty")]
-    rates: Map<String, Map<String, f64>>,
+    pub rates: Map<String, Map<String, f64>>,
 }
