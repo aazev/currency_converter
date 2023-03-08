@@ -66,8 +66,8 @@ async fn main() {
 async fn init_rmq_listen<'a>(channel: &'a lapin::Channel) -> lapin::Result<()> {
     let db_pool = database::pool::connect().await.unwrap();
 
-    let queue_name = std::env::var("RMQ_QUEUE_NAME").unwrap_or_else(|_| "quotation_fetcher".into());
-    let consumer_prefix = "oxidated-quotation-fetcher";
+    let queue_name = std::env::var("RMQ_QUEUE_NAME").unwrap_or_else(|_| "currency-fetcher".into());
+    let consumer_prefix = "oxidated-currency-fetcher";
     let consumer_id = uuid::Uuid::new_v4().to_string();
     let consumer_name = format!("{}-{}", consumer_prefix, consumer_id);
 
