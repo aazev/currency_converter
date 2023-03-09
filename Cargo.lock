@@ -289,27 +289,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "backend"
-version = "0.1.0"
-dependencies = [
- "axum",
- "axum-macros",
- "clap",
- "common",
- "database",
- "dotenv",
- "futures-lite",
- "hyper",
- "hyperlocal",
- "rand",
- "regex",
- "serde",
- "serde_json",
- "sqlx",
- "tokio",
-]
-
-[[package]]
 name = "base64"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -690,6 +669,50 @@ dependencies = [
 ]
 
 [[package]]
+name = "currconv-backend"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum-macros",
+ "clap",
+ "common",
+ "database",
+ "dotenv",
+ "futures-lite",
+ "hyper",
+ "hyperlocal",
+ "rand",
+ "regex",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "tokio",
+]
+
+[[package]]
+name = "currconv-data-worker"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "chrono-tz",
+ "common",
+ "database",
+ "deadpool",
+ "deadpool-lapin",
+ "dotenv",
+ "futures-lite",
+ "itertools",
+ "lapin",
+ "num_cpus",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "cxx"
 version = "1.0.91"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -731,29 +754,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "data-worker"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "chrono-tz",
- "common",
- "database",
- "deadpool",
- "deadpool-lapin",
- "dotenv",
- "futures-lite",
- "itertools",
- "lapin",
- "num_cpus",
- "reqwest",
- "serde",
- "serde_json",
- "sqlx",
- "tokio",
- "uuid",
 ]
 
 [[package]]

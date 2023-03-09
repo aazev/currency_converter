@@ -13,3 +13,11 @@ db-setup:
 	@bash .container/scripts/db-setup.sh
 
 db: db-setup
+
+build:
+	cargo build
+	cd frontend && pnpm install
+
+deploy:
+	cargo build -r
+	cd frontend && pnpm install

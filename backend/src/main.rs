@@ -35,18 +35,18 @@ struct Opts {
 
 fn socket_serve(rt: Router) -> Server<SocketIncoming, IntoMakeService<Router>> {
     let socket_addr = env::var("SOCKET_ADDR").expect("SOCKET_ADDR must be set.");
-    let socket_path = path::Path::new(&socket_addr);
-    match socket_path.exists() {
+    let socket_file = path::Path::new(&socket_addr);
+    match socket_file.exists() {
         true => {
             println!("Removing existing socket file.");
-            std::fs::remove_file(socket_path).expect("Failed to remove socket file.");
+            std::fs::remove_file(socket_file).expect("Failed to remove socket file.");
         }
         false => println!("No existing socket file found."),
     }
 
     println!("Starting server on socket: {}", socket_addr);
 
-    Server::bind_unix(socket_path)
+    Server::bind_unix(socket_file)
         .expect("Failed to bind to socket.")
         .serve(rt.into_make_service())
 }

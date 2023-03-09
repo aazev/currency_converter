@@ -15,7 +15,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+      - run: npm i -g pnpm
+      - name: Build services
+        run: cargo build -r
       - name: Run tests
         run: cargo test
+      - name: Build frontend
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
