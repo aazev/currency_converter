@@ -1,0 +1,13 @@
+[Unit]
+Description=Oxidized Currency Converter RabbitMQ Consumer
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/home/user/deploydir
+Environment="API_KEY=A"
+Environment="DATABASE_URL=postgresql://cc_owner:fh0xm1@127.0.0.1:5432/currency_converter"
+Environment="SOCKET_ADDR=/var/run/rust/currency_converter.sock"
+Environment="BIND_ADDRESS=127.0.0.1:8000"
+ExecStart=/home/user/deploydir/target/release/currconv-data-worker -m socket
+[Install]
+WantedBy=multi-user.target
