@@ -68,7 +68,8 @@ async fn main() {
     let api = Router::new().route("/", get(home));
     let symbols = Router::new()
         .route("/", get(get_symbols))
-        .route("/:id", get(get_symbol));
+        .route("/:id", get(get_symbol))
+        .route("/code/:code", get(get_symbol_by_code));
     let quotations = Router::new().route("/:symbol", get(get_quotations));
 
     let api = api
@@ -104,9 +105,16 @@ async fn main() {
 }
 
 async fn home() -> Result<Json<Value>, (StatusCode, String)> {
-    Ok(Json(
-        serde_json::json!({"code":200, "message": "Hello, World!"}),
-    ))
+    Ok(Json(serde_json::json!({
+        "code":200,
+        "message": "Welcome to the API.",
+        "available_endpoints": [
+            "/api/v1/symbols",
+            "/api/v1/symbols/:id",
+            "/api/v1/symbols/code/:code",
+            "/api/v1/quotations/:symbol"
+        ],
+    })))
 }
 
 async fn get_symbols(
@@ -132,6 +140,20 @@ async fn get_symbol(
     }))
 }
 
+async fn get_symbol_by_code(
+    Path(code): Path<String>,
+    State(state): State<PgPool>,
+) -> Result<Json<SymbolResponse>, (StatusCode, String)> {
+    let symbol = retrieve_symbol_by_code(&code.to_uppercase(), &state)
+        .await
+        .unwrap();
+    Ok(Json(SymbolResponse {
+        code: 200,
+        message: None,
+        symbol,
+    }))
+}
+
 async fn get_quotations(
     Path(symbol): Path<String>,
     State(state): State<PgPool>,
@@ -150,6 +172,6 @@ async fn get_quotations(
 async fn deal_with_it() -> (StatusCode, Json<Value>) {
     (
         StatusCode::NOT_FOUND,
-        Json(serde_json::json!({"error":404,"message": "Not found"})),
+        Json(serde_json::json!({"error":404,"message": "Not found."})),
     )
 }

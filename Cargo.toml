@@ -1,5 +1,5 @@
 [workspace]
-members = ["backend", "database", "common", "data-worker"]
+members = ["backend", "database", "common", "data-worker", "seeder"]
 
 [profile.dev.package."*"]
 opt-level = "z"

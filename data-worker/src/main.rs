@@ -1,8 +1,9 @@
-mod ampq_requests;
-
 use std::env;
 
-use common::http::{requests::QuotationsRequest, responses::SymbolsApiResponse};
+use common::{
+    ampq_requests::{RabbitMQRequest, RabbitMQRequestType},
+    http::{requests::QuotationsRequest, responses::SymbolsApiResponse},
+};
 use database::models::symbols::{insert_symbols, retrieve_all_symbols, InsertableSymbol};
 use deadpool::managed::Object;
 use deadpool_lapin::{Manager, Pool};
@@ -17,8 +18,6 @@ use lapin::{
     ConnectionProperties,
 };
 use sqlx::PgPool;
-
-use crate::ampq_requests::RabbitMQRequest;
 
 #[tokio::main]
 async fn main() {
@@ -133,7 +132,7 @@ async fn handle_rabbitmq_request(
     dotenv().ok();
     let api_key = env::var("API_KEY").expect("API_KEY must be set");
     match &request.request_type {
-        ampq_requests::RabbitMQRequestType::Quotation => {
+        RabbitMQRequestType::Quotation => {
             let api_request = QuotationsRequest {
                 base: request.base_symbol.clone().unwrap(),
                 start_date: request.date_start.clone().unwrap().to_string(),
@@ -153,10 +152,10 @@ async fn handle_rabbitmq_request(
             println!("Api Request: {:?}", &api_request);
             println!("Requesting {}", &request_uri);
         }
-        ampq_requests::RabbitMQRequestType::Fluctuation => {
+        RabbitMQRequestType::Fluctuation => {
             todo!("Fluctuation not implemented yet");
         }
-        ampq_requests::RabbitMQRequestType::Symbols => {
+        RabbitMQRequestType::Symbols => {
             //{"date_query":"2023-03-07T19:30:00", "request_type":"Symbols"}
             let request_uri = "https://api.apilayer.com/exchangerates_data/symbols".to_string();
             let client = reqwest::Client::new();
