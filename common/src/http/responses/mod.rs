@@ -9,7 +9,7 @@ pub struct SymbolsApiResponse {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct QuotationApiResponse {
+pub struct QuotationsApiResponse {
     pub success: bool,
     pub timeseries: bool,
     pub start_date: String,
@@ -20,7 +20,7 @@ pub struct QuotationApiResponse {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct FluctuationApiResponse {
+pub struct FluctuationsApiResponse {
     pub success: bool,
     pub fluctuation: bool,
     pub start_date: String,

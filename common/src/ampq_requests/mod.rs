@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum RabbitMQRequestType {
-    Quotation,
-    Fluctuation,
+    Quotations,
+    Fluctuations,
     Symbols,
 }
 
@@ -15,8 +15,8 @@ impl FromStr for RabbitMQRequestType {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_ascii_lowercase().as_str() {
-            "quotation" => Ok(RabbitMQRequestType::Quotation),
-            "fluctuation" => Ok(RabbitMQRequestType::Fluctuation),
+            "quotations" => Ok(RabbitMQRequestType::Quotations),
+            "fluctuations" => Ok(RabbitMQRequestType::Fluctuations),
             "symbols" => Ok(RabbitMQRequestType::Symbols),
             _ => Err(format!("{} is not a valid request type", s)),
         }

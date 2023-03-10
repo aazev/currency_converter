@@ -1,6 +1,6 @@
-concurrency: 150
+concurrency: 25
 base: "http://localhost:8000"
-iterations: 50000
+iterations: 5000
 rampup: 2
 
 plan:
@@ -17,3 +17,11 @@ plan:
       - 20
       - 151
       - 47
+  - name: Retrieve one week quotations for Symbol
+    request:
+      url: /api/v1/quotations/{{ item }}
+    with_items:
+      - BRL
+      - USD
+      - AUD
+      - CAD

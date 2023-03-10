@@ -1,10 +1,17 @@
-use std::env;
+use std::{env, str::FromStr};
 
+use chrono::{NaiveDate, NaiveDateTime};
 use common::{
     ampq_requests::{RabbitMQRequest, RabbitMQRequestType},
-    http::{requests::QuotationsRequest, responses::SymbolsApiResponse},
+    http::{
+        requests::QuotationsRequest,
+        responses::{QuotationsApiResponse, SymbolsApiResponse},
+    },
 };
-use database::models::symbols::{insert_symbols, retrieve_all_symbols, InsertableSymbol};
+use database::models::{
+    quotations::{insert_quotations, InsertableQuotation},
+    symbols::{insert_symbols, retrieve_all_symbols, retrieve_symbol_by_code, InsertableSymbol},
+};
 use deadpool::managed::Object;
 use deadpool_lapin::{Manager, Pool};
 use dotenv::dotenv;
@@ -17,7 +24,7 @@ use lapin::{
     types::FieldTable,
     ConnectionProperties,
 };
-use sqlx::PgPool;
+use sqlx::{types::BigDecimal, PgPool};
 
 #[tokio::main]
 async fn main() {
@@ -132,7 +139,17 @@ async fn handle_rabbitmq_request(
     dotenv().ok();
     let api_key = env::var("API_KEY").expect("API_KEY must be set");
     match &request.request_type {
-        RabbitMQRequestType::Quotation => {
+        // Example rabbit request:
+        /*
+        {
+            "date_query": "2023-03-10T12:00:00",
+            "date_start": "2022-01-01",
+            "date_end": "2022-12-31",
+            "base_symbol":"EUR",
+            "request_type":"Quotations"
+        }
+        */
+        RabbitMQRequestType::Quotations => {
             let api_request = QuotationsRequest {
                 base: request.base_symbol.clone().unwrap(),
                 start_date: request.date_start.clone().unwrap().to_string(),
@@ -148,11 +165,61 @@ async fn handle_rabbitmq_request(
                 "https://api.apilayer.com/exchangerates_data/timeseries?base={}&symbols={}&start_date={}&end_date={}",
                 &api_request.base,&symbols, &api_request.start_date, &api_request.end_date,
             ));
+            let client = reqwest::Client::new();
             println!("Received request: {:?}", &request);
             println!("Api Request: {:?}", &api_request);
             println!("Requesting {}", &request_uri);
+            let response = client
+                .get(&request_uri)
+                .header("apikey", &api_key)
+                .send()
+                .await?;
+            let response_object = response.json::<QuotationsApiResponse>().await?;
+
+            let mut quotations: Vec<InsertableQuotation> = Vec::new();
+            for (date, rates) in response_object.rates {
+                for (symbol, rate) in rates {
+                    let base_symbol = match retrieve_symbol_by_code(
+                        &response_object.base.to_uppercase(),
+                        &db_pool,
+                    )
+                    .await
+                    {
+                        Ok(s) => s,
+                        Err(e) => {
+                            eprintln!("Base Symbol Error: {}", e);
+                            continue;
+                        }
+                    };
+                    let symbol =
+                        match retrieve_symbol_by_code(&symbol.to_uppercase(), &db_pool).await {
+                            Ok(s) => s,
+                            Err(e) => {
+                                eprintln!("Symbol Code Error: {}", e);
+                                continue;
+                            }
+                        };
+                    //get hour from request date_query but use date from api response
+                    let time = request.date_query.time();
+                    match (base_symbol.id, symbol.id) {
+                        (base_symbol_id, symbol_id) => quotations.push(InsertableQuotation {
+                            base_symbol_id: base_symbol_id,
+                            symbol_id: symbol_id,
+                            date: NaiveDateTime::new(
+                                NaiveDate::from_str(date.as_str()).unwrap(),
+                                time,
+                            ),
+                            open: BigDecimal::try_from(rate.clone()).unwrap(),
+                            close: BigDecimal::try_from(rate.clone()).unwrap(),
+                        }),
+                    }
+                }
+            }
+            println!("Inserting {} quotations", &quotations.len());
+            let _ = insert_quotations(quotations, &db_pool).await?;
+            println!("Inserted quotations");
         }
-        RabbitMQRequestType::Fluctuation => {
+        RabbitMQRequestType::Fluctuations => {
             todo!("Fluctuation not implemented yet");
         }
         RabbitMQRequestType::Symbols => {
@@ -175,7 +242,9 @@ async fn handle_rabbitmq_request(
                     name: value,
                 });
             }
+            println!("Inserting {} symbols", &symbols.len());
             let _ = insert_symbols(&db_pool, symbols).await?;
+            println!("Inserted symbols");
         }
     }
     Ok(())

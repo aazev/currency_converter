@@ -1,5 +1,84 @@
 {
   "db": "PostgreSQL",
+  "08112886ffafff12b5745e788f3d221d5d24379777f5588419eb044b4bd72e23": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8",
+          "Timestamp",
+          "Numeric",
+          "Numeric"
+        ]
+      }
+    },
+    "query": "INSERT INTO quotations (symbol_id, base_symbol_id, date, open, close) VALUES ($1, $2, $3, $4, $5) ON CONFLICT on CONSTRAINT \"quotations_date_symbol_base\" DO UPDATE SET open = EXCLUDED.open, close = EXCLUDED.close"
+  },
+  "1824324dfb50aa1e5a37a9b3f2a10f8f2a6c67fc64519152d1f5c12b39e05707": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int8"
+        },
+        {
+          "name": "symbol_id",
+          "ordinal": 1,
+          "type_info": "Int8"
+        },
+        {
+          "name": "base_symbol_id",
+          "ordinal": 2,
+          "type_info": "Int8"
+        },
+        {
+          "name": "date",
+          "ordinal": 3,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "open",
+          "ordinal": 4,
+          "type_info": "Numeric"
+        },
+        {
+          "name": "close",
+          "ordinal": 5,
+          "type_info": "Numeric"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 6,
+          "type_info": "Timestamp"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 7,
+          "type_info": "Timestamp"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Timestamp"
+        ]
+      }
+    },
+    "query": "\n        SELECT q.*\n        FROM quotations q\n        JOIN (\n            SELECT symbol_id, base_symbol_id, date(MAX(date)) as max_date\n            FROM quotations\n            GROUP BY symbol_id, base_symbol_id, date(date)\n        ) q_max\n        ON q.symbol_id = q_max.symbol_id\n        AND q.base_symbol_id = q_max.base_symbol_id\n        AND date(q.date) = q_max.max_date\n        where\n            q.symbol_id = $1 AND\n            q.date >= $2\n        order by symbol_id asc, date DESC;\n        "
+  },
   "286ee02a766bdb90b39fe2364999cc6eb5d62cd51c366aaaa6c042d144b49ff7": {
     "describe": {
       "columns": [
@@ -88,68 +167,6 @@
     },
     "query": "SELECT * FROM symbols WHERE id = $1"
   },
-  "5148642a3d66571a87dc9390e1f80cb1939a287d32d1c2587574a05bec1249b9": {
-    "describe": {
-      "columns": [
-        {
-          "name": "id",
-          "ordinal": 0,
-          "type_info": "Int8"
-        },
-        {
-          "name": "symbol_id",
-          "ordinal": 1,
-          "type_info": "Int8"
-        },
-        {
-          "name": "base_symbol_id",
-          "ordinal": 2,
-          "type_info": "Int8"
-        },
-        {
-          "name": "date",
-          "ordinal": 3,
-          "type_info": "Date"
-        },
-        {
-          "name": "open",
-          "ordinal": 4,
-          "type_info": "Numeric"
-        },
-        {
-          "name": "close",
-          "ordinal": 5,
-          "type_info": "Numeric"
-        },
-        {
-          "name": "created_at",
-          "ordinal": 6,
-          "type_info": "Timestamp"
-        },
-        {
-          "name": "updated_at",
-          "ordinal": 7,
-          "type_info": "Timestamp"
-        }
-      ],
-      "nullable": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true
-      ],
-      "parameters": {
-        "Left": [
-          "Int8"
-        ]
-      }
-    },
-    "query": "SELECT * FROM quotations where symbol_id = $1"
-  },
   "515daf6daa98eb94ca123c4dad3e4f030ec8727de07807f69af73a3ceecee0e7": {
     "describe": {
       "columns": [
@@ -191,6 +208,22 @@
       }
     },
     "query": "SELECT * FROM symbols"
+  },
+  "6e8e922548fd79c4c00e3f45d8d078f8903625645ded82f8469ebeebfd26bc55": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8",
+          "Timestamp",
+          "Numeric",
+          "Numeric"
+        ]
+      }
+    },
+    "query": "INSERT INTO quotations (symbol_id, base_symbol_id, date, open, close) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (symbol_id, date) DO UPDATE SET open = EXCLUDED.open, close = EXCLUDED.close"
   },
   "e19f4ab90fcd23e911131b7ea5af060db2adbac6a9da1b749a3db28232a45587": {
     "describe": {
