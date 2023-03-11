@@ -2,7 +2,20 @@
 module.exports = {
   content: ['./index.html', './src/**/*.tsx', './src/**/*.ts'],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateAreas: {
+        mobile: ['fromCurrency', 'toCurrency', 'convertButton', 'graph'],
+        desktop: ['fromCurrency toCurrency', 'convertButton convertButton', 'graph graph'],
+      },
+      gridTemplateColumns: {
+        mobile: '1fr',
+        desktop: '1fr 1fr',
+      },
+      gridTemplateRows: {
+        mobile: 'max-content max-content max-content max-content',
+        desktop: 'max-content max-content max-content',
+      },
+    },
   },
-  plugins: [],
+  plugins: [require('@savvywombat/tailwindcss-grid-areas')],
 };
