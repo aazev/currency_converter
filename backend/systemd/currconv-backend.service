@@ -1,14 +1,18 @@
 [Unit]
 Description=Oxidized Currency Converter Backend API
+StartLimitIntervalSec=30
+StartLimitBurst=2
 [Service]
 User=www-data
 Group=www-data
 RuntimeDirectory=rust
-WorkingDirectory=/home/aazev/projects/rust/currency_converter
+WorkingDirectory=/home/user/currency_converter
 Environment="API_KEY=YOUR_API_KEY"
 Environment="DATABASE_URL=postgresql://cc_owner:fh0xm1@127.0.0.1:5432/currency_converter"
 Environment="SOCKET_ADDR=/var/run/rust/currency_converter.sock"
 Environment="BIND_ADDRESS=127.0.0.1:8000"
-ExecStart=/home/aazev/projects/rust/currency_converter/target/release/currconv-backend -m socket
+ExecStart=/home/user/currency_converter/target/release/currconv-backend -m socket
+Restart=always        
+RuntimeMaxSec=7d
 [Install]
 WantedBy=multi-user.target
