@@ -10,7 +10,6 @@ axum = "0.6.9"
 axum-macros = "0.3.4"
 dotenv = "0.15.0"
 futures-lite = "1.12.0"
-hyperlocal = "0.8.0"
 regex = "1.7.1"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = { version = "1.0.93", features = ["preserve_order"] }
@@ -32,6 +31,9 @@ sqlx = { version = "0.6.2", features = [
     "offline",
     "ipnetwork",
 ] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+hyperlocal = "0.8.0"
 
 [dependencies.database]
 path = "../database"

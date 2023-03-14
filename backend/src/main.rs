@@ -7,7 +7,6 @@ use axum::{
     routing::{get, IntoMakeService},
     Json, Router, Server,
 };
-use clap::Parser;
 use database::{
     models::{
         quotations::retrieve_quotations,
@@ -16,23 +15,31 @@ use database::{
     pool::connect,
 };
 use hyper::server::conn::AddrIncoming;
-use hyperlocal::{SocketIncoming, UnixServerExt};
 use responses::{
     quotations::QuotationsResponse,
     symbols::{SymbolResponse, SymbolsResponse},
 };
 use serde_json::Value;
 use sqlx::PgPool;
-use std::{env, net::SocketAddr, path};
+use std::{env, net::SocketAddr};
 use tokio::signal::ctrl_c;
+
+#[cfg(target_os = "linux")]
+use clap::Parser;
+#[cfg(target_os = "linux")]
+use hyperlocal::{SocketIncoming, UnixServerExt};
+#[cfg(target_os = "linux")]
+use std::path;
+#[cfg(target_os = "linux")]
 use types::ServiceMode;
 
+#[cfg(target_os = "linux")]
 #[derive(Parser)]
 struct Opts {
     #[arg(short = 'm', long = "mode", value_enum, default_value = "address")]
     mode: ServiceMode,
 }
-
+#[cfg(target_os = "linux")]
 fn socket_serve(rt: Router) -> Server<SocketIncoming, IntoMakeService<Router>> {
     let socket_addr = env::var("SOCKET_ADDR").expect("SOCKET_ADDR must be set.");
     let socket_file = path::Path::new(&socket_addr);
@@ -62,6 +69,7 @@ fn address_serve(rt: Router) -> Server<AddrIncoming, IntoMakeService<Router>> {
     Server::bind(&server_address).serve(rt.into_make_service())
 }
 
+#[cfg(target_os = "linux")]
 #[tokio::main]
 async fn main() {
     dotenv::dotenv().ok();
@@ -93,6 +101,40 @@ async fn main() {
                 let _ = address_serve(app).await;
             }
         };
+    });
+
+    ctrl_c().await.unwrap();
+    server_handle.abort();
+
+    // let file = std::fs::File::open("./json/quotations.json").unwrap();
+    // let data: responses::QuotationResponse = serde_json::from_reader(file).unwrap();
+
+    // println!("{:?}", data);
+}
+
+#[cfg(target_os = "windows")]
+#[tokio::main]
+async fn main() {
+    dotenv::dotenv().ok();
+    let api = Router::new().route("/", get(home));
+    let symbols = Router::new()
+        .route("/", get(get_symbols))
+        .route("/:id", get(get_symbol))
+        .route("/code/:code", get(get_symbol_by_code));
+    let quotations = Router::new().route("/:symbol", get(get_quotations));
+
+    let api = api
+        .nest("/symbols", symbols)
+        .nest("/quotations", quotations);
+
+    let app = Router::new()
+        .nest("/api/v1/", api)
+        .fallback(deal_with_it)
+        .with_state(connect().await.unwrap());
+
+    // let runtime = Runtime::new().unwrap();
+    let server_handle = tokio::spawn(async move {
+        let _ = address_serve(app).await;
     });
 
     ctrl_c().await.unwrap();
