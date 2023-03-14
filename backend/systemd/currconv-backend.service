@@ -12,7 +12,7 @@ Environment="DATABASE_URL=postgresql://cc_owner:fh0xm1@127.0.0.1:5432/currency_c
 Environment="SOCKET_ADDR=/var/run/rust/currency_converter.sock"
 Environment="BIND_ADDRESS=127.0.0.1:8000"
 ExecStart=/home/user/currency_converter/target/release/currconv-backend -m socket
-Restart=always        
+Restart=always
 RuntimeMaxSec=7d
 [Install]
 WantedBy=multi-user.target

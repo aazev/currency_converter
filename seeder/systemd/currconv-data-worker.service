@@ -1,5 +1,5 @@
 [Unit]
-Description=Oxidized Currency Converter RabbitMQ Consumer
+Description=Oxidized Currency Converter RabbitMQ Seeder
 StartLimitIntervalSec=30
 StartLimitBurst=2
 [Service]
@@ -7,7 +7,7 @@ User=www-data
 Group=www-data
 RuntimeDirectory=rust
 WorkingDirectory=/home/user/deploydir
-ExecStart=/home/user/deploydir/target/release/currconv-data-worker
+ExecStart=/home/user/deploydir/target/release/currconv-data-seeder
 Restart=always
 RuntimeMaxSec=7d
 [Install]

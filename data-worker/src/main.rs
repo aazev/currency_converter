@@ -4,13 +4,13 @@ use chrono::{NaiveDate, NaiveDateTime};
 use common::{
     ampq_requests::{RabbitMQRequest, RabbitMQRequestType},
     http::{
-        requests::QuotationsRequest,
-        responses::{QuotationsApiResponse, SymbolsApiResponse},
+        requests::FluctuationsRequest,
+        responses::{FluctuationsApiResponse, QuotationsApiResponse, SymbolsApiResponse},
     },
 };
 use database::models::{
     quotations::{insert_quotations, InsertableQuotation},
-    symbols::{insert_symbols, retrieve_all_symbols, retrieve_symbol_by_code, InsertableSymbol},
+    symbols::{insert_symbols, retrieve_symbol_by_code, InsertableSymbol},
 };
 use deadpool::managed::Object;
 use deadpool_lapin::{Manager, Pool};
@@ -142,28 +142,81 @@ async fn handle_rabbitmq_request(
         // Example rabbit request:
         /*
         {
-            "date_query": "2023-03-10T12:00:00",
+            "date_query": "2023-03-13T12:00:00",
             "date_start": "2022-01-01",
             "date_end": "2022-12-31",
             "base_symbol":"EUR",
-            "request_type":"Quotations"
+            "request_type":"Fluctuations"
         }
         */
-        RabbitMQRequestType::Quotations => {
-            let api_request = QuotationsRequest {
+        RabbitMQRequestType::Fluctuations => {
+            let api_request = FluctuationsRequest {
                 base: request.base_symbol.clone().unwrap(),
                 start_date: request.date_start.clone().unwrap().to_string(),
                 end_date: request.date_end.clone().unwrap().to_string(),
             };
-            let all_symbols = retrieve_all_symbols(&db_pool).await?;
-            let symbols = all_symbols
-                .iter()
-                .map(|s| s.code.clone())
-                .collect::<Vec<String>>()
-                .join(",");
             let request_uri = std::fmt::format(format_args!(
-                "https://api.apilayer.com/exchangerates_data/timeseries?base={}&symbols={}&start_date={}&end_date={}",
-                &api_request.base,&symbols, &api_request.start_date, &api_request.end_date,
+                "https://api.apilayer.com/exchangerates_data/fluctuation?base={}&start_date={}&end_date={}",
+                &api_request.base, &api_request.start_date, &api_request.end_date,
+            ));
+            let client = reqwest::Client::new();
+            println!("Received request: {:?}", &request);
+            println!("Api Request: {:?}", &api_request);
+            println!("Requesting {}", &request_uri);
+            let response = client
+                .get(&request_uri)
+                .header("apikey", &api_key)
+                .send()
+                .await?;
+            let response_object = response.json::<FluctuationsApiResponse>().await?;
+
+            let mut quotations: Vec<InsertableQuotation> = Vec::new();
+            for (symbol_code, rates) in response_object.rates {
+                let base_symbol =
+                    match retrieve_symbol_by_code(&response_object.base.to_uppercase(), &db_pool)
+                        .await
+                    {
+                        Ok(s) => s,
+                        Err(e) => {
+                            eprintln!("Base Symbol Error: {}", e);
+                            continue;
+                        }
+                    };
+                let symbol =
+                    match retrieve_symbol_by_code(&symbol_code.to_uppercase(), &db_pool).await {
+                        Ok(s) => s,
+                        Err(e) => {
+                            eprintln!("Symbol Code Error: {}", e);
+                            continue;
+                        }
+                    };
+                match (base_symbol.id, symbol.id) {
+                    (base_symbol_id, symbol_id) => {
+                        let start_rate = rates.get("start_rate").unwrap();
+                        let end_rate = rates.get("end_rate").unwrap();
+                        quotations.push(InsertableQuotation {
+                            base_symbol_id: base_symbol_id,
+                            symbol_id: symbol_id,
+                            date: request.date_query.clone(),
+                            open: BigDecimal::try_from(start_rate.clone()).unwrap(),
+                            close: BigDecimal::try_from(end_rate.clone()).unwrap(),
+                        });
+                    }
+                }
+            }
+            println!("Inserting {} quotations", &quotations.len());
+            let _ = insert_quotations(quotations, &db_pool).await?;
+            println!("Inserted quotations");
+        }
+        RabbitMQRequestType::Quotations => {
+            let api_request = FluctuationsRequest {
+                base: request.base_symbol.clone().unwrap(),
+                start_date: request.date_start.clone().unwrap().to_string(),
+                end_date: request.date_end.clone().unwrap().to_string(),
+            };
+            let request_uri = std::fmt::format(format_args!(
+                "https://api.apilayer.com/exchangerates_data/timeseries?base={}&start_date={}&end_date={}",
+                &api_request.base, &api_request.start_date, &api_request.end_date,
             ));
             let client = reqwest::Client::new();
             println!("Received request: {:?}", &request);
@@ -218,9 +271,6 @@ async fn handle_rabbitmq_request(
             println!("Inserting {} quotations", &quotations.len());
             let _ = insert_quotations(quotations, &db_pool).await?;
             println!("Inserted quotations");
-        }
-        RabbitMQRequestType::Fluctuations => {
-            todo!("Fluctuation not implemented yet");
         }
         RabbitMQRequestType::Symbols => {
             //{"date_query":"2023-03-07T19:30:00", "request_type":"Symbols"}
