@@ -699,7 +699,6 @@ dependencies = [
  "chrono-tz",
  "clap",
  "common",
- "database",
  "deadpool",
  "deadpool-lapin",
  "dotenv",
