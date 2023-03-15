@@ -43,6 +43,19 @@ struct Opts {
 fn socket_serve(rt: Router) -> Server<SocketIncoming, IntoMakeService<Router>> {
     let socket_addr = env::var("SOCKET_ADDR").expect("SOCKET_ADDR must be set.");
     let socket_file = path::Path::new(&socket_addr);
+    let socket_folder = socket_file.parent().unwrap();
+    match socket_folder.exists() {
+        true => {
+            if socket_folder.metadata().unwrap().permissions().readonly() {
+                eprintln!("Socket folder is readonly.");
+                std::process::exit(202);
+            }
+        }
+        false => {
+            eprintln!("Socket folder does not exist.");
+            std::process::exit(202);
+        }
+    }
     match socket_file.exists() {
         true => {
             println!("Removing existing socket file.");
@@ -72,6 +85,12 @@ fn address_serve(rt: Router) -> Server<AddrIncoming, IntoMakeService<Router>> {
 #[cfg(target_os = "linux")]
 #[tokio::main]
 async fn main() {
+    use hyper::{
+        header::{ACCEPT, AUTHORIZATION},
+        Method,
+    };
+    use tower_http::cors::{Any, CorsLayer};
+
     dotenv::dotenv().ok();
     let api = Router::new().route("/", get(home));
     let symbols = Router::new()
@@ -83,10 +102,21 @@ async fn main() {
     let api = api
         .nest("/symbols", symbols)
         .nest("/quotations", quotations);
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods([
+            Method::GET,
+            Method::OPTIONS,
+            Method::POST,
+            Method::PUT,
+            Method::DELETE,
+        ])
+        .allow_headers([AUTHORIZATION, ACCEPT]);
 
     let app = Router::new()
         .nest("/api/v1/", api)
         .fallback(deal_with_it)
+        .layer(cors)
         .with_state(connect().await.unwrap());
 
     let opts: Opts = Opts::parse();

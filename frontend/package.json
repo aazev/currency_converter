@@ -13,6 +13,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@material-tailwind/react": "^1.4.2"
     },
     "devDependencies": {
         "@savvywombat/tailwindcss-grid-areas": "^3.0.1",

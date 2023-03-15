@@ -1,5 +1,6 @@
+import { ApiSymbol } from './symbol';
+
 export type ApiCurrency = {
-    id: number;
-    code: string;
+    symbol: ApiSymbol;
     rate: number;
 };

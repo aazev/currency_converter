@@ -88,7 +88,7 @@ pub async fn insert_quotations(
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut transaction = db_pool.begin().await?;
     for quotation in quotations {
-        println!("{:?}", &quotation);
+        // println!("{:?}", &quotation);
         let res = sqlx::query!(
             r#"INSERT INTO quotations (symbol_id, base_symbol_id, date, open, close) VALUES ($1, $2, $3, $4, $5) ON CONFLICT on CONSTRAINT "quotations_date_symbol_base" DO UPDATE SET open = EXCLUDED.open, close = EXCLUDED.close"#,
             quotation.symbol_id,
